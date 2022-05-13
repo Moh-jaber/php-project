@@ -132,7 +132,23 @@ location = "index.php";
             <a href="index.php">Menu</a>
             <a href="#about">About</a>
         </nav>
-        <a href="signup.php" class="btn">Sign Up</a>
+        <?php
+        if (empty($_SESSION['status'])) {
+
+        ?>
+        <div>
+            <a href="login.php" class="btn">Log In</a>
+            <a href="signup.php" class="btn">Sign Up</a>
+        </div>
+        <?php } else {
+        ?>
+        <form action="index.php" method="POST">
+            <input type="submit" value="Log out" name="signout-submit" class="btn">
+        </form>
+        <?php
+        }
+
+        ?>
 
     </header>
 

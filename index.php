@@ -5,7 +5,7 @@ include 'conn.php';
 $b = $crud->getuser();
 
 $f = 0;
-//Login check
+//Login check--------------------------------------------------------------
 if (isset($_POST['login-submit'])) { //if submit was clicked
     $emailLogin = $_POST['email'];
     $passwordLogin = $_POST['pass'];
@@ -23,23 +23,25 @@ if (isset($_POST['login-submit'])) { //if submit was clicked
     }
     if ($f == 0) { //if wrong email or wrong password
 ?>
-<script type="text/javascript">
-alert("Wrong Username or Password");
-location = "login.php";
-</script>
-<?php
+        <script type="text/javascript">
+            alert("Wrong Username or Password");
+            location = "login.php";
+        </script>
+    <?php
 
     }
 } //end of login
 
 
 
-//sign up check
+//sign out------------------------------------------------------------
 if (isset($_POST['signout-submit'])) {
     session_unset();
     session_destroy();
 }
 
+
+//sign up check-------------------------------------------------------
 if (isset($_POST['signup-submit'])) {
 
     $name = $_POST['signup-name'];
@@ -59,32 +61,32 @@ if (isset($_POST['signup-submit'])) {
     }
     if (!$issuccess) {
     ?>
-<script>
-alert("Error: username or email already found");
-location = "signup.php";
-wait(1000);
-</script>
-<?php
+        <script>
+            alert("Error: username or email already found");
+            location = "signup.php";
+            wait(1000);
+        </script>
+        <?php
     } else {
         $issuccess = $crud->insertuser($name, $nb, $email, $password, "user", $image);
-        
+
         $target_dir = "images/";
         $im = $_FILES[$image]['tmp_name'];
-        if(move_uploaded_file($im, $target_dir)){
-            ?>
-                <script>
-                    alert("photo successfully uploaded");
-                </script>
-            <?php
+        if (move_uploaded_file($im, $target_dir)) {
+        ?>
+            <script>
+                alert("photo successfully uploaded");
+            </script>
+        <?php
         }
-        
+
         if (!$issuccess) {
         ?>
-<script>
-alert("There was an error");
-location = "signup.php";
-</script>
-<?php
+            <script>
+                alert("There was an error");
+                location = "signup.php";
+            </script>
+        <?php
         } else {
             while ($c = $b->fetch(PDO::FETCH_ASSOC)) {
                 if ($c['user_name'] == $name && $c['user_email'] == $email && $c['user_pass'] == $password) {
@@ -95,14 +97,14 @@ location = "signup.php";
                 }
             }
         ?>
-<?php
+        <?php
         }
     }
 }
 //end of sign up
 
 
-//reservation
+//reservation---------------------------------------------------------------
 if (isset($_POST['reservation_submit'])) {
     $res_email = $_POST['reservation_email'];
     $res_nb = $_POST['reservation_phone'];
@@ -122,11 +124,11 @@ if (isset($_POST['reservation_submit'])) {
     //checking if the reservation number > 8 (max allowed reservations is 8)
     if ($res_guest_nb > 8) {
         ?>
-<script>
-alert("Maximum number of reservations is 8!");
-location = 'Reservation.php';
-</script>
-<?php
+        <script>
+            alert("Maximum number of reservations is 8!");
+            location = 'Reservation.php';
+        </script>
+    <?php
         $flag = true;
     }
 
@@ -140,11 +142,11 @@ location = 'Reservation.php';
     if ($available_seats <  $res_guest_nb) {
         $flag = true;
     ?>
-<script>
-alert("Not enough places, please try changing the number of guests");
-location = "Reservation.php";
-</script>
-<?php
+        <script>
+            alert("Not enough places, please try changing the number of guests");
+            location = "Reservation.php";
+        </script>
+        <?php
     }
 
     // if flag stays false -->  user can reserve the seats he wants
@@ -153,16 +155,16 @@ location = "Reservation.php";
         $insert_res = $crud->insertreservation($_SESSION['user_id'], $res_date, $res_guest_nb, $res_suggestion);
         if (!$insert_res) {
         ?>
-<script>
-alert("There was an error");
-location = "Reservation.php";
-</script>
-<?php
+            <script>
+                alert("There was an error");
+                location = "Reservation.php";
+            </script>
+        <?php
         } else {
         ?>
-<script>
-alert("Reservation success");
-</script>
+            <script>
+                alert("Reservation success");
+            </script>
 <?php
         }
     }
@@ -210,15 +212,15 @@ alert("Reservation success");
         if (empty($_SESSION['status'])) {
 
         ?>
-        <div>
-            <a href="login.php" class="btn">Log In</a>
-            <a href="signup.php" class="btn">Sign Up</a>
-        </div>
+            <div>
+                <a href="login.php" class="btn">Log In</a>
+                <a href="signup.php" class="btn">Sign Up</a>
+            </div>
         <?php } else {
         ?>
-        <form action="index.php" method="POST">
-            <input type="submit" value="Log out" name="signout-submit" class="btn">
-        </form>
+            <form action="index.php" method="POST">
+                <input type="submit" value="Log out" name="signout-submit" class="btn">
+            </form>
         <?php
         }
 
