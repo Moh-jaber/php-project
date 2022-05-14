@@ -5,7 +5,11 @@ include 'conn.php';
 $b = $crud->getuser();
 
 $f = 0;
-//Login check--------------------------------------------------------------
+
+
+//--------------------------------------------------------Login check--------------------------------------------------------------
+
+
 if (isset($_POST['login-submit'])) { //if submit was clicked
     $emailLogin = $_POST['email'];
     $passwordLogin = $_POST['pass'];
@@ -30,18 +34,18 @@ if (isset($_POST['login-submit'])) { //if submit was clicked
     <?php
 
     }
-} //end of login
+} //----------------------------------------------------end of login-------------------------------------------------------------
 
 
 
-//sign out------------------------------------------------------------
+//---------------------------------------------------------sign out--------------------------------------------------------------
 if (isset($_POST['signout-submit'])) {
     session_unset();
     session_destroy();
 }
 
 
-//sign up check-------------------------------------------------------
+//----------------------------------------------------------sign up check------------------------------------------------------------------
 if (isset($_POST['signup-submit'])) {
 
     $name = $_POST['signup-name'];
@@ -101,11 +105,12 @@ if (isset($_POST['signup-submit'])) {
         }
     }
 }
-//end of sign up
+//-------------------------------------------------end of sign up------------------------------------------------
 
 
-//reservation---------------------------------------------------------------
+//----------------------------------------------------reservation--------------------------------------------------------
 if (isset($_POST['reservation_submit'])) {
+
     $res_email = $_POST['reservation_email'];
     $res_nb = $_POST['reservation_phone'];
     $res_date = $_POST['reservation_date'];
@@ -168,10 +173,8 @@ if (isset($_POST['reservation_submit'])) {
 <?php
         }
     }
-}
+} // ---------------------------------------------------end of reservation-----------------------------------------------
 
-
-?>
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -253,78 +256,278 @@ if (isset($_POST['reservation_submit'])) {
 
     <!-- home section ends -->
 
+    <!-- offers section starts -->
+
+    <section class="offers-events">
+        <h1 class="heading"> our <span>Offers</span> & <span> Events</span> </h1>
+
+        <div class="btn1" onclick="myFunction()">Add Offer
+            <span class="popuptext" id="myPopup"></span>
+        </div>
+
+        <?php
+
+        //---------------------------------------------------add offer----------------------------------------------
+        if (isset($_POST['offer-submit'])) {
+            $off_name = $_POST['offer-name'];
+            $off_desc = $_POST['offer-description'];
+            $off_image = $_POST['offer-image'];
+            $off_endtime = $_POST['offer-endtime'];
+            $off_percent = $_POST['offer-percentage'];
+
+            $insert_offer = $crud->insertoffer($off_name, $off_desc, $off_percent, $off_endtime, $off_image);
+
+            if (!$insert_offer) {
+        ?>
+                <script>
+                    alert("Offer not added");
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                    alert("Done!");
+                    location = "index.php";
+                </script>
+        <?php
+            }
+        }
+        ?>
+        <div class="box-container">
+            <?php
+
+            $of = $crud->getoffer();
+            while ($fda = $of->fetch(PDO::FETCH_ASSOC)) {
+                $databasename = $fda['offer_name'];
+                $databasedesc = $fda['offer_desc'];
+                $databaseimage = $fda['offer_image'];
+                $databasepercent = $fda['offer_percentage'];
+                $databaseendtime = $fda['offer_end_time'];
+
+            ?>
+                <div class="box">
+                    <span class="price"> <?php echo $databasepercent ?> </span>
+                    <img src="<?php echo $databaseimage ?>" alt="">
+                    <h3><?php echo $databasename ?></h3>
+                    <p><?php echo $databasedesc ?></p>
+                    <p><?php echo $databaseendtime ?></p>
+                </div>
+            <?php
+            }// ------------------------------------------------end of add offer----------------------------------------------
+            ?>
+
+        </div>
+
+        <div class="PopupScreen ">
+            <form class="Design" action="index.php" method="POST">
+                <div class="c-logo">
+                    <a href="#" class="logo"><i class="fas fa-utensils"></i>
+                        <span style="font-size: 20px ; font-weight: bolder;
+                color:#666;"> Panadora</span>
+                    </a>
+                </div>
+
+
+                <div class="inputBox content">
+
+                    <label for="offer-name"> Name:</label>
+                    <input required type="text" id="offername" name="offer-name" placeholder="Offer name" class="input">
+
+                    <label for="offer-percentage">Percentage:</label>
+                    <input required type="number" min="1" max="100" id="offerpercentage" name="offer-percentage" placeholder="Offer percentage " class="input">
+
+                    <label for="offer-endtime">End time:</label>
+                    <input required type="date" id="offerendtime" name="offer-endtime" placeholder="Offer end time " class="input">
+
+                    <label for="offer-description">Description:</label>
+                    <textarea required placeholder="Write your description here:" name="offer-description" id="offerdescription" cols="30" rows="5"></textarea>
+
+                    <label for="image"></label>
+                    <input required type="file" name="offer-image" id="offerimage" />
+
+                </div>
+
+                <div class="btns">
+                    <input type="submit" value="Add" name="offer-submit" class="btn2" style="margin-right: 1rem;margin-left: 0.5rem;">
+                    <input type="button" value="Close" class="btn2" style="margin-left: 4rem;" onclick="myFunction()">
+                </div>
+
+
+            </form>
+        </div>
+
+        <div class="btn1" onclick="myFunction2()">Add Event
+            <span class="popuptext" id="myPopup"></span>
+        </div>
+
+        <div class="PopupScreen2 ">
+            <form class="Design" action="index.php" method="POST">
+                <div class="c-logo">
+                    <a href="#" class="logo"><i class="fas fa-utensils"></i>
+                        <span style="font-size: 20px ; font-weight: bolder;
+                color:#666;"> Panadora</span>
+                    </a>
+                </div>
+
+
+                <div class="inputBox content">
+
+                    <label for="event-name"> Name:</label>
+                    <input type="text" id="eventname" name="event-name" placeholder="Event name" class="input" required>
+
+                    <label for="event-description">Description:</label>
+                    <textarea required placeholder="Write your description here:" name="event-description" id="eventdescription" cols="30" rows="5"></textarea>
+
+                    <label for="image"></label>
+                    <input required type="file" name="event-image" id="eventimage" />
+
+                </div>
+
+                <div class="btns">
+                    <input type="submit" value="Add" name="event-submit" class="btn2" style="margin-right: 1rem;margin-left: 0.5rem;">
+                    <input type="button" value="Close" class="btn2" style="margin-left: 4rem;" onclick="myFunction2()">
+                </div>
+
+
+            </form>
+        </div>
+            <?php
+        //---------------------------------------------------------add event----------------------------------------------
+        if (isset($_POST['event-submit'])) {
+            $ev_name = $_POST['event-name'];
+            $ev_desc = $_POST['event-description'];
+            $ev_image = $_POST['event-image'];
+
+            $insert_event = $crud->insertevent($ev_name, $ev_desc, $ev_image);
+
+            if (!$insert_event) {
+        ?>
+                <script>
+                    alert("event not added");
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                    alert("Done!");
+                    location = "index.php";
+                </script>
+        <?php
+            }
+        }
+        ?>
+        <div class="box-container">
+            <?php
+
+            $e = $crud->getevent();
+            while ($fda = $e->fetch(PDO::FETCH_ASSOC)) {
+                $databasename = $fda['event_name'];
+                $databasedesc = $fda['event_desc'];
+                $databaseimage = $fda['event_image'];
+
+            ?>
+                <div class="box">
+                    <img src="<?php echo $databaseimage ?>" alt="">
+                    <h3><?php echo $databasename ?></h3>
+                    <p><?php echo $databasedesc ?></p>
+                </div>
+            <?php
+            }//--------------------------------------------end of add event---------------------------------------------------------
+            ?>
+
+        </div>
+
+    </section>
+    <!-- offers section ends -->
 
     <!-- speciality section starts  -->
 
     <section class="speciality" id="speciality">
 
-        <h1 class="heading"> our <span>domain</span> </h1>
+        <h1 class="heading"> our <span>Categories</span> </h1>
 
-        <div class="box-container">
+        <div class="item-container">
+            <div class="box">
+                <img src="images/breakfast.jpg" style="box-shadow:0px 0px 10px #666666" alt="">
+                <h3>Breakfast</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
+            </div>
 
             <div class="box">
-                <a href="Menu.php"><img class="image" src="images/burger.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-1.png" alt="">
-                    <h3>tasty burger</h3>
-                    <p>
-                        The best burgers offer a combination of tastes and textures – sweet, sour, salt – with a bit of
-                        crunch. The patty is so juicy, the bun soft but sturdy. A quarter pound flattened piece of meat.
-                    </p>
+                <img src="images/burger.jpg" alt="">
+                <h3>Lunch</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
+
             <div class="box">
-                <a href="Menu.php"><img class="image" src="images/pizza.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-2.png" alt="">
-                    <h3>tasty pizza</h3>
-                    <p>pizza, dish of Italian origin consisting of a flattened disk of bread dough topped with some
-                        combination of olive oil, oregano, tomato, olives, mozzarella or other cheese, and many other
-                        ingredients.</p>
+                <img src="images/g-1.jpg" alt="">
+                <h3>Dinner</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
+
+
             <div class="box">
-                <a href="Menu.php"><img class="image" src="images/ice.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-3.png" alt="">
-                    <h3>cold ice-cream</h3>
-                    <p>a rich, sweet, creamy frozen food made from variously flavored cream and milk products churned or
-                        stirred to a smooth consistency during the freezing process and often containing gelatin, etc..
-                    </p>
+                <img src="images/g-9.jpg" alt="">
+                <h3>Dessert</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
+
             <div class="box">
-                <a href="Menu.php"><img class="image" src="images/drinks.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-4.png" alt="">
-                    <h3>cold drinks</h3>
-                    <p>pizza, dish of Italian origin consisting of a flattened disk of bread dough topped with some
-                        combination of olive oil, oregano, tomato, olives, mozzarella or other cheese, and many other
-                        ingredients.</p>
+                <img src="images/s-img-4.jpg" alt="">
+                <h3>Drinks</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
+
             <div class="box">
-                <a href="Menu.php"><img class="image" src="images/s-img-5.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-5.png" alt="">
-                    <h3>tasty sweets</h3>
-                    <p>Dissert ,such as biscuits, cakes, cookies, custards, gelatins, ice creams, pastries, pies,
-                        puddings, macaroons, sweet soups, tarts, and fruit salad. contain cane sugar, palm sugar, brown
-                        sugar,etc..</p>
+                <img src="images/s-img-3.jpg" alt="">
+                <h3>Ice-Cream</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
-            </div>
-            <div class="box">
-                <a href="Menu.php"><img class="image" src="images/breakfast.jpg" alt=""></a>
-                <div class="content">
-                    <img src="images/s-6.png" alt="">
-                    <h3>healty breakfast</h3>
-                    <p>Breakfast brought a serene sense of comfort that started the day so well.Four eggs for breakfast,
-                        fried in a brushing of olive oil, lightly salted... so perfect.Toast and peanut butter, a glass
-                        of oat milk.</p>
-                </div>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
 
         </div>
+        <br><br>
         <div>
             <a href="Menu.php" class="btn1">View Menu</a>
         </div>
@@ -384,7 +587,7 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <a href="#" class="btn">order now</a>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
 
             <div class="box">
@@ -398,7 +601,7 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <a href="#" class="btn">order now</a>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
 
             <div class="box">
@@ -412,7 +615,7 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <a href="#" class="btn">order now</a>
+                <a href="Menu.php" class="btn">Check it out !</a>
             </div>
         </div><br><br><br><br><br>
 
@@ -420,7 +623,7 @@ if (isset($_POST['reservation_submit'])) {
         <div class="box-container">
             <div class="box">
                 <img src="images/pic1.png" alt="">
-                <h3>john deo</h3>
+                <h3>Lara White</h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -428,13 +631,12 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti delectus, ducimus facere quod
-                    ratione vel laboriosam? Est, maxime rem. Itaque.</p>
+                <p> This cozy restaurant has left the best impressions! Hospitable hosts, delicious dishes, beautiful presentation, and wonderful dessert. I recommend to everyone! I would like to come back here again and again.</p>
             </div>
 
             <div class="box">
-                <img src="images/pic1.png" alt="">
-                <h3>john deo</h3>
+                <img src="images/pic2.png" alt="">
+                <h3>Sami Faour</h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -442,13 +644,12 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti delectus, ducimus facere quod
-                    ratione vel laboriosam? Est, maxime rem. Itaque.</p>
+                <p> It’s a great experience. The ambiance is very welcoming and charming. Amazing wines, food and service. Staff are extremely knowledgeable and make great recommendations.</p>
             </div>
 
             <div class="box">
-                <img src="images/pic1.png" alt="">
-                <h3>john deo</h3>
+                <img src="images/pic3.png" alt="">
+                <h3>Aya Darwich</h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -456,12 +657,11 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti delectus, ducimus facere quod
-                    ratione vel laboriosam? Est, maxime rem. Itaque.</p>
+                <p>This place is great!You can tell making the customers happy is their main priority. Food is pretty good, some italian classics and some twists, and for their prices it’s 100% worth it.</p>
             </div>
 
 
-        </div><br><br><br><br><br>
+        </div><br><br>
         <div>
             <a href="feedback.php" class="btn1">Your Feedback</a>
         </div>
@@ -516,7 +716,8 @@ if (isset($_POST['reservation_submit'])) {
                 experience! We only strive to give you the warmest of welcome and service you truly deserve! We only
                 serve the heartiest, healthiest dishes, lovingly prepared and generously served. Being at
                 <b>Panadora</b> is being with family! <b>Panadora</b> is yours!
-            </p>
+            </p><br><br>
+            <a href="about.php" class="btn1">Read more</a>
         </div>
 
     </section>

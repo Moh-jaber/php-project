@@ -10,6 +10,7 @@
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/menu.css">
 
 </head>
 <body>
@@ -25,196 +26,69 @@
     <nav class="navbar">
         <a href="index.php">home</a>
         <a href="#speciality">Menu</a>
-        <a href="#about">About</a>
+        <a href="Reservation.php">Reservation</a>
+        <!--<a href="#popular">popular</a>        <a href="#order">order</a>-->
+        <a href="about.php">About</a>
+        <a href="index.php">review</a>
     </nav>
-    <a href="signup.php" class="btn">Sign Up</a>
+    <a href="login.php" class="btn">Sign Up</a>
 
 </header>
 
-<h1 class="heading"> most <span>popular</span> foods </h1>
+<section>
+<div class="wrapper">
+    <div class="title">
+        <h4><span>Fresh food for good health </span>Our Menu</h4>
+    </div>
+     <div class="menu">
+        <div class="single-menu">
+            <img src="images/breakfast.jpg" alt="Breakfast" class="image">
+            <div class="menu_content">
+                <a href="Breakfast.html" class="btn">Breakfast</a>
+                 <p>Make mornings good with a delicious breakfast.</p>
+            </div>
 
-<section class="popular" id="popular">
+        </div>
+         <div class="single-menu">
+            <img src="images/burger.jpg" alt="lunch" class="image">
+            <div class="menu_content">
+                <a href="Lunch.html" class="btn">Lunch</a>
+                 <p>Make you'r day good with a delicious Lunch.</p> 
+                 
+            </div>
 
-    <h1 class="heading"> most <span>popular</span> foods </h1>
-
-    <div class="box-container">
-        <!-- Query: Select * from Database name 
-         result  =  mysql query
-        while($row = mysqli->FetchAll){div }  -->
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-1.jpg" alt="">
-            <h3>tasty burger</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
+        </div> 
+        <div class="single-menu">
+            <img src="images/g-1.jpg" alt="dinner" class="image">
+            <div class="menu_content">
+                <a href="Dinner.html" class="btn">Dinner</a>
+                 <p>Food tastes better when you eat it with your family.</p>
             </div>
-            <a href="#" class="btn">order now</a>
         </div>
-        
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-2.jpg" alt="">
-            <h3>tasty cakes</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
+        <div class="single-menu">
+            <img src="images/g-9.jpg" alt="sweet" class="image">
+            <div class="menu_content">
+                <a href="Dessert.html" class="btn">Dessert</a>
+                 <p>You can't buy happiness, but you can buy dessert.</p>
             </div>
-            <a href="#" class="btn">order now</a>
         </div>
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-3.jpg" alt="">
-            <h3>tasty sweets</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
+        <div class="single-menu">
+            <img src="images/s-img-4.jpg" alt="drinks" class="image">
+            <div class="menu_content">
+                <a href="Drinks.html" class="btn">Drinks</a>
+                 <p>Keep Calm and drink a cocktail.</p>
             </div>
-            <a href="#" class="btn">order now</a>
-        </div>
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-4.jpg" alt="">
-            <h3>tasty cupcakes</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
+        </div> 
+        <div class="single-menu">
+            <img src="images/s-img-3.jpg" alt="ice" class="image">
+            <div class="menu_content">
+                <a href="ice.html" class="btn">ice-cream</a>
+                 <p>A balanced diet is an ice cream in each hand.</p>
             </div>
-            <a href="#" class="btn">order now</a>
-        </div>
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-5.jpg" alt="">
-            <h3>cold drinks</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-            </div>
-            <a href="#" class="btn">order now</a>
-        </div>
-        <div class="box">
-            <span class="price"> $5 - $20 </span>
-            <img src="images/p-6.jpg" alt="">
-            <h3>cold ice-cream</h3>
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-            </div>
-            <a href="#" class="btn">order now</a>
-        </div>
+        </div> 
 
     </div>
-
-</section>
-
-
-<section class="gallery" id="gallery">
-
-    <h1 class="heading"> our food <span> gallery </span> </h1>
-
-    <div class="box-container">
-
-        <div class="box">
-            <img src="images/g-1.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-2.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-3.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-4.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-5.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-6.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-7.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-8.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-        <div class="box">
-            <img src="images/g-9.jpg" alt="">
-            <div class="content">
-                <h3>tasty food</h3>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti, ipsum.</p>
-                <a href="#" class="btn">order now</a>
-            </div>
-        </div>
-
-    </div>
-
-</section>
-
-<section class="about" id="about">
-    <h1 class="heading">Our <span>Story</span></h1>
-    <div class="content">
-        <p><b>Panadora</b> is your place to enjoy good food with the comfort and familiarity of home! <b>Panadora</b> was born out of a vision to provide you a simple yet warm and comfortable dining experience! We only strive to give you the warmest of welcome and service you truly deserve! We only serve the heartiest, healthiest dishes, lovingly prepared and generously served. Being at <b>Panadora</b> is being with family! <b>Panadora</b> is yours!</p>
-    </div>
-    
+</div>
 </section>
 
 
@@ -227,8 +101,10 @@
         <a href="#" class="btn">pinterest</a>
         <a href="#" class="btn">linkedin</a>
     </div>
-
-    <h1 class="credit"> created by <span> mr. web designer </span> | all rights reserved! </h1>
+<div>
+    <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
+    <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
+    <h1 class="credit"> Aall rights reserved!   </h1>
 
 </section>
 
