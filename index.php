@@ -68,21 +68,11 @@ if (isset($_POST['signup-submit'])) {
         <script>
             alert("Error: username or email already found");
             location = "signup.php";
-            wait(1000);
         </script>
         <?php
     } else {
         $issuccess = $crud->insertuser($name, $nb, $email, $password, "user", $image);
 
-        $target_dir = "images/";
-        $im = $_FILES[$image]['tmp_name'];
-        if (move_uploaded_file($im, $target_dir)) {
-        ?>
-            <script>
-                alert("photo successfully uploaded");
-            </script>
-        <?php
-        }
 
         if (!$issuccess) {
         ?>
