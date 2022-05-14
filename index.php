@@ -5,11 +5,7 @@ include 'conn.php';
 $b = $crud->getuser();
 
 $f = 0;
-
-
-//--------------------------------------------------------Login check--------------------------------------------------------------
-
-
+//Login check
 if (isset($_POST['login-submit'])) { //if submit was clicked
     $emailLogin = $_POST['email'];
     $passwordLogin = $_POST['pass'];
@@ -34,18 +30,16 @@ if (isset($_POST['login-submit'])) { //if submit was clicked
     <?php
 
     }
-} //----------------------------------------------------end of login-------------------------------------------------------------
+} //end of login
 
 
 
-//---------------------------------------------------------sign out--------------------------------------------------------------
+//sign up check
 if (isset($_POST['signout-submit'])) {
     session_unset();
     session_destroy();
 }
 
-
-//----------------------------------------------------------sign up check------------------------------------------------------------------
 if (isset($_POST['signup-submit'])) {
 
     $name = $_POST['signup-name'];
@@ -68,11 +62,21 @@ if (isset($_POST['signup-submit'])) {
         <script>
             alert("Error: username or email already found");
             location = "signup.php";
+            wait(1000);
         </script>
         <?php
     } else {
         $issuccess = $crud->insertuser($name, $nb, $email, $password, "user", $image);
 
+        $target_dir = "images/";
+        $im = $_FILES[$image]['tmp_name'];
+        if (move_uploaded_file($im, $target_dir)) {
+        ?>
+            <script>
+                alert("photo successfully uploaded");
+            </script>
+        <?php
+        }
 
         if (!$issuccess) {
         ?>
@@ -95,12 +99,11 @@ if (isset($_POST['signup-submit'])) {
         }
     }
 }
-//-------------------------------------------------end of sign up------------------------------------------------
+//end of sign up
 
 
-//----------------------------------------------------reservation--------------------------------------------------------
+//reservation
 if (isset($_POST['reservation_submit'])) {
-
     $res_email = $_POST['reservation_email'];
     $res_nb = $_POST['reservation_phone'];
     $res_date = $_POST['reservation_date'];
@@ -163,8 +166,10 @@ if (isset($_POST['reservation_submit'])) {
 <?php
         }
     }
-} // ---------------------------------------------------end of reservation-----------------------------------------------
+}
 
+
+?>
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -303,7 +308,7 @@ if (isset($_POST['reservation_submit'])) {
                     <p><?php echo $databaseendtime ?></p>
                 </div>
             <?php
-            }// ------------------------------------------------end of add offer----------------------------------------------
+            } // ------------------------------------------------end of add offer----------------------------------------------
             ?>
 
         </div>
@@ -317,23 +322,22 @@ if (isset($_POST['reservation_submit'])) {
                     </a>
                 </div>
 
-
                 <div class="inputBox content">
 
                     <label for="offer-name"> Name:</label>
-                    <input required type="text" id="offername" name="offer-name" placeholder="Offer name" class="input">
+                    <input type="text" id="offername" name="offer-name" placeholder="Offer name" class="input">
 
                     <label for="offer-percentage">Percentage:</label>
-                    <input required type="number" min="1" max="100" id="offerpercentage" name="offer-percentage" placeholder="Offer percentage " class="input">
+                    <input type="number" min="1" max="100" id="offerpercentage" name="offer-percentage" placeholder="Offer percentage " class="input">
 
                     <label for="offer-endtime">End time:</label>
-                    <input required type="date" id="offerendtime" name="offer-endtime" placeholder="Offer end time " class="input">
+                    <input type="date" id="offerendtime" name="offer-endtime" placeholder="Offer end time " class="input">
 
                     <label for="offer-description">Description:</label>
-                    <textarea required placeholder="Write your description here:" name="offer-description" id="offerdescription" cols="30" rows="5"></textarea>
+                    <textarea placeholder="Write your description here:" style="resize: none;" name="offer-description" id="offerdescription" cols="30" rows="5"></textarea>
 
                     <label for="image"></label>
-                    <input required type="file" name="offer-image" id="offerimage" />
+                    <input type="file" name="offer-image" id="offerimage" />
 
                 </div>
 
@@ -363,13 +367,13 @@ if (isset($_POST['reservation_submit'])) {
                 <div class="inputBox content">
 
                     <label for="event-name"> Name:</label>
-                    <input type="text" id="eventname" name="event-name" placeholder="Event name" class="input" required>
+                    <input type="text" id="eventname" name="event-name" placeholder="Event name" class="input">
 
                     <label for="event-description">Description:</label>
-                    <textarea required placeholder="Write your description here:" name="event-description" id="eventdescription" cols="30" rows="5"></textarea>
+                    <textarea placeholder="Write your description here:" style="resize: none;" name="event-description" id="eventdescription" cols="30" rows="5"></textarea>
 
                     <label for="image"></label>
-                    <input required type="file" name="event-image" id="eventimage" />
+                    <input type="file" name="event-image" id="eventimage" />
 
                 </div>
 
@@ -381,7 +385,7 @@ if (isset($_POST['reservation_submit'])) {
 
             </form>
         </div>
-            <?php
+        <?php
         //---------------------------------------------------------add event----------------------------------------------
         if (isset($_POST['event-submit'])) {
             $ev_name = $_POST['event-name'];
@@ -422,7 +426,7 @@ if (isset($_POST['reservation_submit'])) {
                     <p><?php echo $databasedesc ?></p>
                 </div>
             <?php
-            }//--------------------------------------------end of add event---------------------------------------------------------
+            } //--------------------------------------------end of add event---------------------------------------------------------
             ?>
 
         </div>
@@ -608,6 +612,9 @@ if (isset($_POST['reservation_submit'])) {
                 <a href="Menu.php" class="btn">Check it out !</a>
             </div>
         </div><br><br><br><br><br>
+
+
+
 
         <h1 class="heading"> popular <span>clients</span> </h1>
         <div class="box-container">

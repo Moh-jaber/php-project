@@ -41,6 +41,10 @@ function myFunction2() {
   $(".PopupScreen2").toggle();
 }
 
+function myFunction3() {
+  $(".PopupScreen3").toggle();
+}
+
 // Initialize and add the map
 function initMap() {
   // The location of Uluru

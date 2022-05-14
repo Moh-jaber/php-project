@@ -785,6 +785,9 @@ header .navbar a:hover{
 }
 
 .offers-events .PopupScreen2 .Design .btns{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   padding-bottom: 1rem;
 }
 

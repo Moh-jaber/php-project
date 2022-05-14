@@ -236,7 +236,7 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
                     <input type="email" id="email" name="email" placeholder="email" class="input">
 
                     <label for="feedback">Feedback:</label>
-                    <textarea placeholder="Write your feedback here:" name="feedback" id="feedback" cols="30" rows="5"></textarea>
+                    <textarea placeholder="Write your feedback here:" style="resize: none;" name="feedback" id="feedback" cols="30" rows="5"></textarea>
 
 
                 </div>
