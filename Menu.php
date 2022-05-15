@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    require_once 'conn.php';
+session_start();
+require_once 'conn.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,45 +21,95 @@
 
 <body>
 
-    <?php 
+    <?php
     //---------------------------------------------add item------------------------------------------------
-        if(isset($_POST['item-submit'])){
+    if (isset($_POST['item-submit'])) {
+
+        $file = $_FILES['item-image'];
+
+        $fileName = $_FILES['item-image']['name'];
+        $fileTmpName = $_FILES['item-image']['tmp_name'];
+        $fileSize = $_FILES['item-image']['size'];
+        $fileError = $_FILES['item-image']['error'];
+        $fileType = $_FILES['item-image']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        ?>
+            <script>
+                console.log(<?php echo $fileActualExt ?>);
+            </script>
+        <?php
+
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0) {
+
+                $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                $fileDestination = 'images/itemImages/' . $fileNameNew;
+                move_uploaded_file($fileTmpName, $fileDestination);
+    ?>
+                <script>
+                    alert("image uploaded successfully !");
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                    alert("There was an error uploading the image !");
+                    location = "Menu.php";
+                </script>
+            <?php
+            }
+        } else {
+            ?>
+            <script>
+                alert("you cannot upload files of this type !");
+                location = "Menu.php";
+            </script>
+        <?php
+        }
+
+
+        if ($fileNameNew) {
+
 
             $item_name = $_POST['item-name'];
             $item_price = $_POST['item-price'];
             $item_desc = $_POST['item-desc'];
             $item_rating = $_POST['rating'];
-            $item_image = $_POST['item-image'];
+            $item_image = $fileNameNew;
             $categroy_id = $_SESSION['categoryid'];
 
 
             $insertitem = $crud->insertitem($item_name, $item_price, $item_desc, $item_rating, $item_image, $categroy_id);
 
-            ?>
-                <script>
-                    console.log("inserting!!");
-                </script>
+        ?>
+            <script>
+                console.log("inserting!!");
+            </script>
             <?php
 
 
-            if($insertitem){
-                ?>
-                    <script>
-                        alert("Item added !");
-                    </script>
-                <?php
+            if ($insertitem) {
+            ?>
+                <script>
+                    alert("Item added !");
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                    alert("Error !");
+                    location = "Menu.php";
+                </script>
+    <?php
             }
-            else{
-                ?>
-                    <script>
-                        alert("Error !");
-                        location = "item.php";
-                    </script>
-                <?php
-            }
-
         }
-        // ------------------------------------------------------end of add item-----------------------------------------------------
+    }
+    // ------------------------------------------------------end of add item-----------------------------------------------------
     ?>
 
     <!-- header section starts  -->

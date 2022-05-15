@@ -31,10 +31,10 @@
                             </a>
                         </div>
                             <h2 class="logo" style="color:#666666">Sign up</h2>
-                            <form action="index.php" method="POST" class="register-form" id="register-form">
+                            <form action="index.php" method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="image"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                    <input type="file" name="signup-image" id="image" />
+                                    <label for="file"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="file" name="file" id="image" />
                                 </div>
                                 <div class="form-group">
                                     <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>

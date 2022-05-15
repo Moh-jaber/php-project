@@ -172,7 +172,7 @@ include "conn.php";
             ?>
                         <div class="box">
                             <span class="price"> <?php echo $a['item_price'] ?></span>
-                            <img src="<?php echo $a['item_image'] ?>" alt="">
+                            <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                             <h3><?php echo $a['item_name'] ?></h3>
                             <div class="stars">
                                 <i class="fas fa-star"></i>
@@ -196,7 +196,7 @@ include "conn.php";
                             </div>
 
                             <div class="PopupScreen">
-                                <form class="Design" action="Menu.php" method="POST">
+                                <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                                     <div class="c-logo">
                                         <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                             <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -263,7 +263,7 @@ include "conn.php";
     ?>
             <div class="box">
                 <span class="price"> <?php echo $a['item_price'] ?></span>
-                <img src="<?php echo $a['item_image'] ?>" alt="">
+                <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                 <h3><?php echo $a['item_name'] ?></h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -287,7 +287,7 @@ include "conn.php";
                 </div>
 
                 <div class="PopupScreen">
-                    <form class="Design" action="Menu.php" method="POST">
+                    <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                         <div class="c-logo">
                             <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                 <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -353,7 +353,7 @@ include "conn.php";
     ?>
             <div class="box">
                 <span class="price"> <?php echo $a['item_price'] ?></span>
-                <img src="<?php echo $a['item_image'] ?>" alt="">
+                <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                 <h3><?php echo $a['item_name'] ?></h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -377,7 +377,7 @@ include "conn.php";
                 </div>
 
                 <div class="PopupScreen">
-                    <form class="Design" action="Menu.php" method="POST">
+                    <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                         <div class="c-logo">
                             <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                 <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -444,7 +444,7 @@ include "conn.php";
     ?>
             <div class="box">
                 <span class="price"> <?php echo $a['item_price'] ?></span>
-                <img src="<?php echo $a['item_image'] ?>" alt="">
+                <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                 <h3><?php echo $a['item_name'] ?></h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -468,7 +468,7 @@ include "conn.php";
                 </div>
 
                 <div class="PopupScreen">
-                    <form class="Design" action="Menu.php" method="POST">
+                    <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                         <div class="c-logo">
                             <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                 <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -535,7 +535,7 @@ include "conn.php";
     ?>
             <div class="box">
                 <span class="price"> <?php echo $a['item_price'] ?></span>
-                <img src="<?php echo $a['item_image'] ?>" alt="">
+                <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                 <h3><?php echo $a['item_name'] ?></h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -559,7 +559,7 @@ include "conn.php";
                 </div>
 
                 <div class="PopupScreen">
-                    <form class="Design" action="Menu.php" method="POST">
+                    <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                         <div class="c-logo">
                             <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                 <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -626,7 +626,7 @@ include "conn.php";
     ?>
             <div class="box">
                 <span class="price"> <?php echo $a['item_price'] ?></span>
-                <img src="<?php echo $a['item_image'] ?>" alt="">
+                <?php echo '<img alt="Error" src="images/itemImages/' . $a['item_image'] . '"' ?>
                 <h3><?php echo $a['item_name'] ?></h3>
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -650,7 +650,7 @@ include "conn.php";
                 </div>
 
                 <div class="PopupScreen">
-                    <form class="Design" action="Menu.php" method="POST">
+                    <form class="Design" action="Menu.php" method="POST" enctype="multipart/form-data">
                         <div class="c-logo">
                             <a href="#" class="logo"><i class="fas fa-utensils"></i>
                                 <span style="font-size: 20px ; font-weight: bolder;color:#666;"> Panadora</span>
@@ -710,6 +710,7 @@ include "conn.php";
     </div><?php
             }
             ?>
+                <a href="Menu.php" class="btn">Back to Menu</a>
 </div>
 
 </section>

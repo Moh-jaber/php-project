@@ -5,7 +5,7 @@ include 'conn.php';
 $b = $crud->getuser();
 
 $f = 0;
-//Login check
+//-------------------------------------------------------------------Login check-------------------------------------------------
 if (isset($_POST['login-submit'])) { //if submit was clicked
     $emailLogin = $_POST['email'];
     $passwordLogin = $_POST['pass'];
@@ -27,14 +27,14 @@ if (isset($_POST['login-submit'])) { //if submit was clicked
             alert("Wrong Username or Password");
             location = "login.php";
         </script>
-    <?php
+        <?php
 
     }
-} //end of login
+} //----------------------------------------------------------end of login------------------------------------------------------------
 
 
 
-//sign up check
+//---------------------------------------------------------------sign up check-----------------------------------------------------------
 if (isset($_POST['signout-submit'])) {
     session_unset();
     session_destroy();
@@ -42,64 +42,98 @@ if (isset($_POST['signout-submit'])) {
 
 if (isset($_POST['signup-submit'])) {
 
-    $name = $_POST['signup-name'];
-    $email = $_POST['signup-email'];
-    $password = $_POST['signup-pass'];
-    $nb = $_POST['signup-nb'];
-    $image = $_POST['signup-image'];
+    $fileNameNew = false;
 
-    $issuccess = true;
-    while ($c = $b->fetch(PDO::FETCH_ASSOC)) {
-        if ($c['user_email'] == $email) {
-            $issuccess = false;
-            break;
-        } else {
-            $issuccess = true;
-        }
-    }
-    if (!$issuccess) {
-    ?>
-        <script>
-            alert("Error: username or email already found");
-            location = "signup.php";
-            wait(1000);
-        </script>
-        <?php
-    } else {
-        $issuccess = $crud->insertuser($name, $nb, $email, $password, "user", $image);
+    $file = $_FILES['file'];
 
-        $target_dir = "images/";
-        $im = $_FILES[$image]['tmp_name'];
-        if (move_uploaded_file($im, $target_dir)) {
+    $fileName = $_FILES['file']['name'];
+    $fileTmpName = $_FILES['file']['tmp_name'];
+    $fileSize = $_FILES['file']['size'];
+    $fileError = $_FILES['file']['error'];
+    $fileType = $_FILES['file']['type'];
+
+    $fileExt = explode('.', $fileName);
+    $fileActualExt = strtolower(end($fileExt));
+
+    $allowed = array('jpg', 'jpeg', 'png');
+
+    if (in_array($fileActualExt, $allowed)) {
+        if ($fileError === 0) {
+            $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+            $fileDestination = 'images/userImages/' . $fileNameNew;
+            move_uploaded_file($fileTmpName, $fileDestination);
         ?>
             <script>
-                alert("photo successfully uploaded");
+                alert("image uploaded successfully !");
+            </script>
+        <?php
+        } else {
+        ?>
+            <script>
+                alert("There was an error uploading the image !");
             </script>
         <?php
         }
+    } else {
+        ?>
+        <script>
+            alert("you cannot upload files of this type !");
+        </script>
+        <?php
+    }
 
+    if ($fileNameNew) {
+
+
+        $name = $_POST['signup-name'];
+        $email = $_POST['signup-email'];
+        $password = $_POST['signup-pass'];
+        $nb = $_POST['signup-nb'];
+        $image = $fileNameNew;
+
+        $issuccess = true;
+        while ($c = $b->fetch(PDO::FETCH_ASSOC)) {
+            if ($c['user_email'] == $email) {
+                $issuccess = false;
+                break;
+            } else {
+                $issuccess = true;
+            }
+        }
         if (!$issuccess) {
         ?>
             <script>
-                alert("There was an error");
+                alert("Error: username or email already found");
                 location = "signup.php";
+                wait(1000);
             </script>
-        <?php
+            <?php
         } else {
-            while ($c = $b->fetch(PDO::FETCH_ASSOC)) {
-                if ($c['user_name'] == $name && $c['user_email'] == $email && $c['user_pass'] == $password) {
-                    $_SESSION['user_name'] = $name;
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['user_image'] = $user_image;
-                    $_SESSION['status'] = 'on';
+            $issuccess = $crud->insertuser($name, $nb, $email, $password, "user", $image);
+
+            if (!$issuccess) {
+            ?>
+                <script>
+                    alert("There was an error");
+                    location = "signup.php";
+                </script>
+            <?php
+            } else {
+                while ($c = $b->fetch(PDO::FETCH_ASSOC)) {
+                    if ($c['user_name'] == $name && $c['user_email'] == $email && $c['user_pass'] == $password) {
+                        $_SESSION['user_name'] = $name;
+                        $_SESSION['user_id'] = $user_id;
+                        $_SESSION['user_image'] = $user_image;
+                        $_SESSION['status'] = 'on';
+                    }
                 }
-            }
-        ?>
+            ?>
         <?php
+            }
         }
     }
 }
-//end of sign up
+//-----------------------------------------------------------------end of sign up-------------------------------------------------
 
 
 //reservation
@@ -264,27 +298,70 @@ if (isset($_POST['reservation_submit'])) {
 
         //---------------------------------------------------add offer----------------------------------------------
         if (isset($_POST['offer-submit'])) {
-            $off_name = $_POST['offer-name'];
-            $off_desc = $_POST['offer-description'];
-            $off_image = $_POST['offer-image'];
-            $off_endtime = $_POST['offer-endtime'];
-            $off_percent = $_POST['offer-percentage'];
 
-            $insert_offer = $crud->insertoffer($off_name, $off_desc, $off_percent, $off_endtime, $off_image);
+            $file = $_FILES['offer-image'];
 
-            if (!$insert_offer) {
+            $fileName = $_FILES['offer-image']['name'];
+            $fileTmpName = $_FILES['offer-image']['tmp_name'];
+            $fileSize = $_FILES['offer-image']['size'];
+            $fileError = $_FILES['offer-image']['error'];
+            $fileType = $_FILES['offer-image']['type'];
+
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
+
+            $allowed = array('jpg', 'jpeg', 'png');
+
+            if (in_array($fileActualExt, $allowed)) {
+                if ($fileError === 0) {
+
+                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                    $fileDestination = 'images/offerImages/' . $fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
         ?>
+                    <script>
+                        alert("image uploaded successfully !");
+                    </script>
+                <?php
+                } else {
+                ?>
+                    <script>
+                        alert("There was an error uploading the image !");
+                    </script>
+                <?php
+                }
+            } else {
+                ?>
                 <script>
-                    alert("Offer not added");
+                    alert("you cannot upload files of this type !");
                 </script>
             <?php
-            } else {
-            ?>
-                <script>
-                    alert("Done!");
-                    location = "index.php";
-                </script>
-        <?php
+            }
+
+            if($fileNameNew){
+
+                $off_name = $_POST['offer-name'];
+                $off_desc = $_POST['offer-description'];
+                $off_image = $fileNameNew;
+                $off_endtime = $_POST['offer-endtime'];
+                $off_percent = $_POST['offer-percentage'];
+
+                $insert_offer = $crud->insertoffer($off_name, $off_desc, $off_percent, $off_endtime, $off_image);
+
+                if (!$insert_offer) {
+                ?>
+                    <script>
+                        alert("Offer not added");
+                    </script>
+                <?php
+                } else {
+                ?>
+                    <script>
+                        alert("Done!");
+                        location = "index.php";
+                    </script>
+            <?php
+                }
             }
         }
         ?>
@@ -302,7 +379,7 @@ if (isset($_POST['reservation_submit'])) {
             ?>
                 <div class="box">
                     <span class="price"> <?php echo $databasepercent ?> </span>
-                    <img src="<?php echo $databaseimage ?>" alt="">
+                    <?php echo '<img alt=error" src="images/offerImages/' . $databaseimage . '"' ?>
                     <h3><?php echo $databasename ?></h3>
                     <p><?php echo $databasedesc ?></p>
                     <p><?php echo $databaseendtime ?></p>
@@ -314,7 +391,7 @@ if (isset($_POST['reservation_submit'])) {
         </div>
 
         <div class="PopupScreen ">
-            <form class="Design" action="index.php" method="POST">
+            <form class="Design" action="index.php" method="POST" enctype="multipart/form-data">
                 <div class="c-logo">
                     <a href="#" class="logo"><i class="fas fa-utensils"></i>
                         <span style="font-size: 20px ; font-weight: bolder;
@@ -336,7 +413,7 @@ if (isset($_POST['reservation_submit'])) {
                     <label for="offer-description">Description:</label>
                     <textarea placeholder="Write your description here:" style="resize: none;" name="offer-description" id="offerdescription" cols="30" rows="5"></textarea>
 
-                    <label for="image"></label>
+                    <label for="offer-image"></label>
                     <input type="file" name="offer-image" id="offerimage" />
 
                 </div>
@@ -355,7 +432,7 @@ if (isset($_POST['reservation_submit'])) {
         </div>
 
         <div class="PopupScreen2 ">
-            <form class="Design" action="index.php" method="POST">
+            <form class="Design" action="index.php" method="POST" enctype="multipart/form-data">
                 <div class="c-logo">
                     <a href="#" class="logo"><i class="fas fa-utensils"></i>
                         <span style="font-size: 20px ; font-weight: bolder;
@@ -388,25 +465,70 @@ if (isset($_POST['reservation_submit'])) {
         <?php
         //---------------------------------------------------------add event----------------------------------------------
         if (isset($_POST['event-submit'])) {
-            $ev_name = $_POST['event-name'];
-            $ev_desc = $_POST['event-description'];
-            $ev_image = $_POST['event-image'];
 
-            $insert_event = $crud->insertevent($ev_name, $ev_desc, $ev_image);
+            $fileNameNew = false;
 
-            if (!$insert_event) {
+            $file = $_FILES['event-image'];
+
+            $fileName = $_FILES['event-image']['name'];
+            $fileTmpName = $_FILES['event-image']['tmp_name'];
+            $fileSize = $_FILES['event-image']['size'];
+            $fileError = $_FILES['event-image']['error'];
+            $fileType = $_FILES['event-image']['type'];
+
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
+
+            $allowed = array('jpg', 'jpeg', 'png');
+
+            if (in_array($fileActualExt, $allowed)) {
+                if ($fileError === 0) {
+
+                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                    $fileDestination = 'images/eventImages/' . $fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
         ?>
+                    <script>
+                        alert("image uploaded successfully !");
+                    </script>
+                <?php
+                } else {
+                ?>
+                    <script>
+                        alert("There was an error uploading the image !");
+                    </script>
+                <?php
+                }
+            } else {
+                ?>
                 <script>
-                    alert("event not added");
+                    alert("you cannot upload files of this type !");
                 </script>
             <?php
-            } else {
-            ?>
-                <script>
-                    alert("Done!");
-                    location = "index.php";
-                </script>
-        <?php
+            }
+
+            if($fileNameNew){
+
+                $ev_name = $_POST['event-name'];
+                $ev_desc = $_POST['event-description'];
+                $ev_image = $fileNameNew;
+
+                $insert_event = $crud->insertevent($ev_name, $ev_desc, $ev_image);
+
+                if (!$insert_event) {
+                ?>
+                    <script>
+                        alert("event not added");
+                    </script>
+                <?php
+                } else {
+                ?>
+                    <script>
+                        alert("Done!");
+                        location = "index.php";
+                    </script>
+            <?php
+                }
             }
         }
         ?>
@@ -421,7 +543,7 @@ if (isset($_POST['reservation_submit'])) {
 
             ?>
                 <div class="box">
-                    <img src="<?php echo $databaseimage ?>" alt="">
+                <?php echo '<img alt="Error" src="images/eventImages/'.$databaseimage.'"' ?>
                     <h3><?php echo $databasename ?></h3>
                     <p><?php echo $databasedesc ?></p>
                 </div>

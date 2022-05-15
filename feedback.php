@@ -187,7 +187,7 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
 
 
                     <div class="box">
-                        <?php echo '<img alt=' . $username . ' src=images/' . $userimage . ' >' ?>
+                        <?php echo '<img alt=' . $username . ' src="images/userImages/'.$userimage.'"' ?>
                         <h3><?php echo $username; ?></h3>
                         <div class="stars">
                             <i class="fas fa-star"></i>
