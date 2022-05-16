@@ -4,6 +4,21 @@ session_start();
 include 'conn.php';
 $b = $crud->getuser();
 
+$getcurrencyfromres = $crud->getcurrencyfromres();
+
+
+$getcurrency = $crud->getcurrency();
+
+while ($a = $getcurrency->fetch(PDO::FETCH_ASSOC)) {
+    if ($getcurrencyfromres['currency_id'] == $a['currency_id']) {
+        $_SESSION['currency'] = $a['currency_name'];
+        $_SESSION['currency-rate'] = $a['currency_rate'];
+        $_SESSION['currency-sym'] = $a['currency_symbol'];
+        break;
+    }
+}
+
+
 $f = 0;
 //-------------------------------------------------------------------Login check-------------------------------------------------
 if (isset($_POST['login-submit'])) { //if submit was clicked
@@ -12,8 +27,9 @@ if (isset($_POST['login-submit'])) { //if submit was clicked
     while ($a = $b->fetch(PDO::FETCH_ASSOC)) {
         if ($a['user_email'] == $emailLogin && $a['user_pass'] == $passwordLogin) {
             $_SESSION['user_name'] = $a['user_name'];
-            $_SESSION['user_id'] = $a['user_id']; //if email and password exist we login and save the email and password in the session array
+            $_SESSION['user_id'] = $a['user_id'];
             $_SESSION['user_image'] = $a['user_image'];
+            $_SESSION['user_type'] = $a['user_type'];
             $_SESSION['status'] = 'on';
             $f++;
             break; //break with f>0
@@ -136,7 +152,7 @@ if (isset($_POST['signup-submit'])) {
 //-----------------------------------------------------------------end of sign up-------------------------------------------------
 
 
-//reservation
+//------------------------------------------------------------reservation---------------------------------------------------------
 if (isset($_POST['reservation_submit'])) {
     $res_email = $_POST['reservation_email'];
     $res_nb = $_POST['reservation_phone'];
@@ -200,11 +216,12 @@ if (isset($_POST['reservation_submit'])) {
 <?php
         }
     }
-}
+} //-------------------------------------------------------------end of reservation-------------------------------------------------
 
 
 ?>
-?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -220,6 +237,10 @@ if (isset($_POST['reservation_submit'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        console.log(' <?php echo $_SESSION['currency']; ?> ');
+        console.log(' <?php echo $_SESSION['currency-rate']; ?> ');
+    </script>
 
 </head>
 
@@ -253,6 +274,7 @@ if (isset($_POST['reservation_submit'])) {
             <form action="index.php" method="POST">
                 <input type="submit" value="Log out" name="signout-submit" class="btn">
             </form>
+
         <?php
         }
 
@@ -273,7 +295,122 @@ if (isset($_POST['reservation_submit'])) {
                 at home, <b>Panadora</b> lively, casual yet upscale atmosphere makes it perfect for dining with friends,
                 family, clients and business associates!
             </p>
-            <a href="signup.php" class="btn">Sign Up</a>
+            <?php
+            if (!empty($_SESSION['user_type']) && $_SESSION['user_type'] === "superAdmin") {
+            ?>
+                <div class="btn" onclick="myFunction3()" style="padding: 10px;">Add Admin
+                    <span class="popuptext" id="myPopup"></span>
+                </div>
+
+                <div class="PopupScreen3">
+                    <form class="Design" action="index.php" method="POST" enctype="multipart/form-data">
+                        <div class="c-logo">
+                            <a href="#" class="logo"><i class="fas fa-utensils"></i>
+                                <span style="font-size: 20px ; font-weight: bolder; color:#666;"> Panadora</span>
+                            </a>
+                        </div>
+
+                        <div class="inputBox content">
+
+                            <label for="adminImage">Image:</label>
+                            <input type="file" id="adminImage" name="adminImage" class="input">
+
+                            <label for="adminName">Name:</label>
+                            <input type="text" id="adminName" name="adminName" placeholder="Name" class="input">
+
+                            <label for="adminNb">Phone:</label>
+                            <input type="number" id="adminNb" name="adminNb" placeholder="Number" class="input">
+
+                            <label for="email">Email:</label>
+                            <input type="email" id="adminEmail" name="adminEmail" placeholder="email" class="input">
+
+                            <label for="adminPass">Password:</label>
+                            <input type="password" id="adminPass" name="adminPass" placeholder="Password" class="input">
+
+                            <label for="adminConfirmPass">Confirm Password:</label>
+                            <input type="password" id="adminConfirmPass" name="adminConfirmPass" placeholder="Confirm Password" class="input">
+
+                        </div>
+                        <div class="btns">
+                            <input type="submit" value="Add" name="addAdmin-submit" class="btn2" style="margin-right:auto; margin-left:1rem">
+                            <input type="button" value="Close" class="btn2" style="margin-left:auto; margin-right:1rem" onclick="myFunction3()">
+                        </div>
+
+
+                    </form>
+                </div>
+                <?php
+            }
+
+            // -----------------------------------------------------adding an admin-----------------------------------------------
+            if (isset($_POST['addAdmin-submit'])) {
+
+                $file = $_FILES['adminImage'];
+
+                $fileName = $_FILES['adminImage']['name'];
+                $fileTmpName = $_FILES['adminImage']['tmp_name'];
+                $fileSize = $_FILES['adminImage']['size'];
+                $fileError = $_FILES['adminImage']['error'];
+                $fileType = $_FILES['adminImage']['type'];
+
+                $fileExt = explode('.', $fileName);
+                $fileActualExt = strtolower(end($fileExt));
+
+                $allowed = array('jpg', 'jpeg', 'png');
+
+                if (in_array($fileActualExt, $allowed)) {
+                    if ($fileError === 0) {
+
+                        $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                        $fileDestination = 'images/userImages/' . $fileNameNew;
+                        move_uploaded_file($fileTmpName, $fileDestination);
+                ?>
+                        <script>
+                            alert("image uploaded successfully !");
+                        </script>
+                    <?php
+                    } else {
+                    ?>
+                        <script>
+                            alert("There was an error uploading the image !");
+                        </script>
+                    <?php
+                    }
+                } else {
+                    ?>
+                    <script>
+                        alert("you cannot upload files of this type !");
+                    </script>
+                    <?php
+                }
+
+                if ($fileNameNew) {
+
+                    $admin_name = $_POST['adminName'];
+                    $admin_nb = $_POST['adminNb'];
+                    $admin_email = $_POST['adminEmail'];
+                    $admin_image = $fileNameNew;
+                    $admin_password = $_POST['adminPass'];
+
+                    $addAdmin = $crud->insertuser($admin_name, $admin_nb, $admin_email, $admin_password, 'admin', $admin_image);
+
+                    if (!$addAdmin) {
+                    ?>
+                        <script>
+                            alert("admin not added");
+                        </script>
+                    <?php
+                    } else {
+                    ?>
+                        <script>
+                            alert("Done!");
+                            location = "index.php";
+                        </script>
+            <?php
+                    }
+                }
+            }
+            ?>
 
         </div>
 
@@ -288,11 +425,18 @@ if (isset($_POST['reservation_submit'])) {
     <!-- offers section starts -->
 
     <section class="offers-events">
-        <h1 class="heading"> our <span>Offers</span> & <span> Events</span> </h1>
+        <h1 class="heading"> our <span>Offers</span></h1>
 
-        <div class="btn1" onclick="myFunction()">Add Offer
-            <span class="popuptext" id="myPopup"></span>
-        </div>
+        <?php
+        if (!empty($_SESSION['user_type']) && ($_SESSION['user_type'] === "admin" || $_SESSION['user_type'] === "superAdmin")) {
+        ?>
+            <div class="btn1" onclick="myFunction()">Add Offer
+                <span class="popuptext" id="myPopup"></span>
+            </div><br><br>
+
+        <?php
+        }
+        ?>
 
         <?php
 
@@ -335,10 +479,10 @@ if (isset($_POST['reservation_submit'])) {
                 <script>
                     alert("you cannot upload files of this type !");
                 </script>
-            <?php
+                <?php
             }
 
-            if($fileNameNew){
+            if ($fileNameNew) {
 
                 $off_name = $_POST['offer-name'];
                 $off_desc = $_POST['offer-description'];
@@ -360,12 +504,12 @@ if (isset($_POST['reservation_submit'])) {
                         alert("Done!");
                         location = "index.php";
                     </script>
-            <?php
+        <?php
                 }
             }
         }
         ?>
-        <div class="box-container">
+        <div class="item-container">
             <?php
 
             $of = $crud->getoffer();
@@ -378,11 +522,11 @@ if (isset($_POST['reservation_submit'])) {
 
             ?>
                 <div class="box">
-                    <span class="price"> <?php echo $databasepercent ?> </span>
-                    <?php echo '<img alt=error" src="images/offerImages/' . $databaseimage . '"' ?>
+                    <span class="price"> <?php echo "$databasepercent %" ?> </span>
+                    <img <?php echo '<img alt=error" src="images/offerImages/' . $databaseimage . '"' ?>>
                     <h3><?php echo $databasename ?></h3>
-                    <p><?php echo $databasedesc ?></p>
-                    <p><?php echo $databaseendtime ?></p>
+                    <h4><?php echo $databasedesc ?></h4>
+                    <h5><?php echo " ENDS AT: $databaseendtime " ?></h5>
                 </div>
             <?php
             } // ------------------------------------------------end of add offer----------------------------------------------
@@ -395,7 +539,7 @@ if (isset($_POST['reservation_submit'])) {
                 <div class="c-logo">
                     <a href="#" class="logo"><i class="fas fa-utensils"></i>
                         <span style="font-size: 20px ; font-weight: bolder;
-                color:#666;"> Panadora</span>
+                    color:#666;"> Panadora</span>
                     </a>
                 </div>
 
@@ -420,16 +564,25 @@ if (isset($_POST['reservation_submit'])) {
 
                 <div class="btns">
                     <input type="submit" value="Add" name="offer-submit" class="btn2" style="margin-right: 1rem;margin-left: 0.5rem;">
-                    <input type="button" value="Close" class="btn2" style="margin-left: 4rem;" onclick="myFunction()">
+                    <input type="button" value="Close" class="btn2" style="margin-left: 10rem;" onclick="myFunction()">
                 </div>
 
 
             </form>
-        </div>
+        </div><br><br>
 
-        <div class="btn1" onclick="myFunction2()">Add Event
-            <span class="popuptext" id="myPopup"></span>
-        </div>
+        <h1 class="heading"> our <span>Events</span></h1>
+
+        <?php
+        if (!empty($_SESSION['user_type']) && ($_SESSION['user_type'] === "admin" || $_SESSION['user_type'] === "superAdmin")) {
+        ?>
+
+            <div class="btn1" onclick="myFunction2()">Add Event
+                <span class="popuptext" id="myPopup"></span>
+            </div><br><br>
+        <?php
+        }
+        ?>
 
         <div class="PopupScreen2 ">
             <form class="Design" action="index.php" method="POST" enctype="multipart/form-data">
@@ -455,8 +608,8 @@ if (isset($_POST['reservation_submit'])) {
                 </div>
 
                 <div class="btns">
-                    <input type="submit" value="Add" name="event-submit" class="btn2" style="margin-right: 1rem;margin-left: 0.5rem;">
-                    <input type="button" value="Close" class="btn2" style="margin-left: 4rem;" onclick="myFunction2()">
+                    <input type="submit" value="Add" name="event-submit" class="btn2" style="margin-right: 1rem;margin-left: 1rem;">
+                    <input type="button" value="Close" class="btn2" style="margin-left: 10rem;" onclick="myFunction2()">
                 </div>
 
 
@@ -504,10 +657,10 @@ if (isset($_POST['reservation_submit'])) {
                 <script>
                     alert("you cannot upload files of this type !");
                 </script>
-            <?php
+                <?php
             }
 
-            if($fileNameNew){
+            if ($fileNameNew) {
 
                 $ev_name = $_POST['event-name'];
                 $ev_desc = $_POST['event-description'];
@@ -527,12 +680,12 @@ if (isset($_POST['reservation_submit'])) {
                         alert("Done!");
                         location = "index.php";
                     </script>
-            <?php
+        <?php
                 }
             }
         }
         ?>
-        <div class="box-container">
+        <div class="item-container">
             <?php
 
             $e = $crud->getevent();
@@ -543,9 +696,9 @@ if (isset($_POST['reservation_submit'])) {
 
             ?>
                 <div class="box">
-                <?php echo '<img alt="Error" src="images/eventImages/'.$databaseimage.'"' ?>
+                    <img <?php echo '<img alt="Error" src="images/eventImages/' . $databaseimage . '"' ?>>
                     <h3><?php echo $databasename ?></h3>
-                    <p><?php echo $databasedesc ?></p>
+                    <h4><?php echo $databasedesc ?></h4>
                 </div>
             <?php
             } //--------------------------------------------end of add event---------------------------------------------------------
@@ -750,7 +903,9 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p> This cozy restaurant has left the best impressions! Hospitable hosts, delicious dishes, beautiful presentation, and wonderful dessert. I recommend to everyone! I would like to come back here again and again.</p>
+                <p> This cozy restaurant has left the best impressions! Hospitable hosts, delicious dishes, beautiful
+                    presentation, and wonderful dessert. I recommend to everyone! I would like to come back here again
+                    and again.</p>
             </div>
 
             <div class="box">
@@ -763,7 +918,8 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p> It’s a great experience. The ambiance is very welcoming and charming. Amazing wines, food and service. Staff are extremely knowledgeable and make great recommendations.</p>
+                <p> It’s a great experience. The ambiance is very welcoming and charming. Amazing wines, food and
+                    service. Staff are extremely knowledgeable and make great recommendations.</p>
             </div>
 
             <div class="box">
@@ -776,7 +932,8 @@ if (isset($_POST['reservation_submit'])) {
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <p>This place is great!You can tell making the customers happy is their main priority. Food is pretty good, some italian classics and some twists, and for their prices it’s 100% worth it.</p>
+                <p>This place is great!You can tell making the customers happy is their main priority. Food is pretty
+                    good, some italian classics and some twists, and for their prices it’s 100% worth it.</p>
             </div>
 
 
@@ -855,8 +1012,10 @@ if (isset($_POST['reservation_submit'])) {
             <a href="#" class="btn">pinterest</a>
             <a href="#" class="btn">linkedin</a>
         </div>
-
-        <h1 class="credit"> created by <span> mr. web designer </span> | all rights reserved! </h1>
+        <div>
+            <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
+            <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
+            <h1 class="credit"> All rights reserved! </h1>
 
     </section>
 

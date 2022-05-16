@@ -5,7 +5,7 @@ include "conn.php";
 if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
 ?>
     <script>
-        location = "index.php";
+        location = "login.php";
     </script>
 <?php
 }
@@ -130,6 +130,7 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
         <nav class="navbar">
             <a href="index.php">home</a>
             <a href="index.php">Menu</a>
+            <a href="Reservation.php">Reservation</a>
             <a href="#about">About</a>
         </nav>
         <a href="signup.php" class="btn">Sign Up</a>
@@ -143,12 +144,59 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
 
         <h1 class="heading"> our customers <span>reviews</span> </h1>
 
+
+
         <div class="box-container">
+            <div class="box">
+                <img src="images/pic1.png" alt="">
+                <h3>Lara White</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <p> This cozy restaurant has left the best impressions! Hospitable hosts, delicious dishes, beautiful
+                    presentation, and wonderful dessert. I recommend to everyone! I would like to come back here again
+                    and again.</p>
+            </div>
+
+            <div class="box">
+                <img src="images/pic2.png" alt="">
+                <h3>Sami Faour</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <p> It’s a great experience. The ambiance is very welcoming and charming. Amazing wines, food and
+                    service. Staff are extremely knowledgeable and make great recommendations.</p>
+            </div>
+
+            <div class="box">
+                <img src="images/pic3.png" alt="">
+                <h3>Aya Darwich</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <p>This place is great!You can tell making the customers happy is their main priority. Food is pretty
+                    good, some italian classics and some twists, and for their prices it’s 100% worth it.</p>
+            </div>
             <?php
             if (isset($_POST["submit"])  && (!empty($_POST["name"]) && !empty($_POST["email"]) && !empty($_POST["feedback"])  && !empty($_POST["rating"]))) {
-
-                $a = $crud->insertfeedback($_SESSION['user_id'], $_POST["feedback"]);
                 $b = $crud->insertrating($_SESSION['user_id'], $_POST["rating"]);
+                $rate = $crud->getrating();
+                while ($dsa = $rate->fetch(PDO::FETCH_ASSOC)) {
+                    $userrate = $dsa['rating_id'];
+                }
+                $a = $crud->insertfeedback($_SESSION['user_id'], $_POST["feedback"], $userrate);
                 if (!$a && !$b) {
             ?>
                     <script>
@@ -187,14 +235,28 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
 
 
                     <div class="box">
-                        <?php echo '<img alt=' . $username . ' src="images/userImages/'.$userimage.'"' ?>
+                        <img <?php echo '<img alt=' . $username . ' src="images/userImages/' . $userimage . '"' ?>>
                         <h3><?php echo $username; ?></h3>
+                        <?php
+                        $malak = $crud->getrating();
+                        while ($a = $malak->fetch(PDO::FETCH_ASSOC)) {
+                            if ($c['rating_id'] == $a['rating_id']) {
+                                $userrating = $a['user_rating'];
+                            }
+                        }                        ?>
                         <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
+                            <?php
+                            for ($i = $userrating; $i > 0; $i--) {
+                                if ($i > 0 && $i < 1)
+                                    echo "<i class='fa fa-star-half-o' aria-hidden='true'></i>";
+                                else {
+                                    echo "<i class='fa fa-star' aria-hidden='true'></i>";
+                                }
+                            }
+                            for ($i = intval(5 - $userrating); $i > 0; $i--) {
+                                echo "<i class='fa fa-star-o' aria-hidden='true'></i>";
+                            }
+                            ?>
                         </div>
                         <p><?php echo $f; ?></p>
                     </div>
@@ -221,8 +283,7 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
             <form class="Design" action="feedback.php" method="POST">
                 <div class="c-logo">
                     <a href="#" class="logo"><i class="fas fa-utensils"></i>
-                        <span style="font-size: 20px ; font-weight: bolder;
-                color:#666;"> Panadora</span>
+                        <span style="font-size: 20px ; font-weight: bolder; color:#666;"> Panadora</span>
                     </a>
                 </div>
 
@@ -262,8 +323,8 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
                     <input type="hidden" name="rating" id="rating_val" value="0" />
                 </div>
                 <div class="btns">
-                    <input type="submit" value="Submit" name="submit" class="btn2" style="margin-right: 1rem;margin-left: 0.5rem;">
-                    <input type="button" value="Close" class="btn2" style="margin-left: 4rem;" onclick="myFunction()">
+                    <input type="submit" value="Submit" name="submit" class="btn2" style="margin-right:auto; margin-left:1rem">
+                    <input type="button" value="Close" class="btn2" style="margin-left:auto; margin-right:1rem" onclick="myFunction()">
                 </div>
 
 
@@ -282,6 +343,7 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
                 serve the heartiest, healthiest dishes, lovingly prepared and generously served. Being at
                 <b>Panadora</b> is being with family! <b>Panadora</b> is yours!
             </p>
+            <a href="about.php" class="btn1">Read more</a>
         </div>
 
     </section>
@@ -300,8 +362,10 @@ if (empty($_SESSION['user_id']) || empty($_SESSION['status'])) {
             <a href="#" class="btn">pinterest</a>
             <a href="#" class="btn">linkedin</a>
         </div>
-
-        <h1 class="credit"> created by <span> mr. web designer </span> | all rights reserved! </h1>
+        <div>
+            <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
+            <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
+            <h1 class="credit"> All rights reserved! </h1>
 
     </section>
     <script src="script.js"></script>

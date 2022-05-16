@@ -40,7 +40,7 @@
     <nav class="navbar">
         <a href="index.php">home</a>
         <a href="Menu.php">Menu</a>
-        <a href="Reservation.php">Reservation</a>
+		<a href="feedback.php">Feedback</a>
         <a href="about.php">About</a>
     </nav>
     <?php
@@ -194,19 +194,19 @@
 
 <section class="footer">
 
-    <div class="share">
-        <a href="#" class="btn">facebook</a>
-        <a href="#" class="btn">twitter</a>
-        <a href="#" class="btn">instagram</a>
-        <a href="#" class="btn">pinterest</a>
-        <a href="#" class="btn">linkedin</a>
-    </div>
-<div>
-    <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
-    <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
-    <h1 class="credit"> Aall rights reserved!   </h1>
+        <div class="share">
+            <a href="#" class="btn">facebook</a>
+            <a href="#" class="btn">twitter</a>
+            <a href="#" class="btn">instagram</a>
+            <a href="#" class="btn">pinterest</a>
+            <a href="#" class="btn">linkedin</a>
+        </div>
+        <div>
+            <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
+            <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
+            <h1 class="credit"> All rights reserved! </h1>
 
-</section>
+    </section>
 
 </body>
 </html>

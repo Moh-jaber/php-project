@@ -9,12 +9,12 @@ class crud
     }
 
 
-    public function insertfeedback($user_id, $f_desc)
+    public function insertfeedback($user_id, $f_desc, $rating_id)
     {
         try {
 
             // define sql statement to be executed
-            $sql = " INSERT INTO feedback (f_desc,user_id) VALUES (:fdesc,:userid) "; // hude l parameters henne l placeholders 
+            $sql = " INSERT INTO feedback (f_desc,user_id,rating_id) VALUES (:fdesc,:userid,:ratingid) "; // hude l parameters henne l placeholders 
 
             // prepare the sql statement for execution
             $stmt = $this->db->prepare($sql);
@@ -22,6 +22,7 @@ class crud
             // bind all placeholders to the actual values
             $stmt->bindparam(':fdesc', $f_desc);
             $stmt->bindparam(':userid', $user_id);
+            $stmt->bindparam(':ratingid', $rating_id);
 
             // execute statement
             $stmt->execute();
@@ -160,12 +161,12 @@ class crud
     }
 
     //inserting a new item to the database
-    public function insertitem($item_name, $item_price, $item_desc, $item_rating, $item_image, $category_id)
+    public function insertitem($item_name, $item_price, $item_currency, $item_desc, $item_rating, $item_image, $category_id)
     {
         try {
 
             // define sql statement to be executed
-            $sql = " INSERT INTO item (item_name, item_price, item_desc, item_rating, item_image, category_id) VALUES (:itemname, :itemprice, :itemdesc, :itemrating, :itemimage, :categoryid) "; // hude l parameters henne l placeholders 
+            $sql = " INSERT INTO item (item_name, item_price, item_currency, item_desc, item_rating, item_image, category_id) VALUES (:itemname, :itemprice, :itemcurrency, :itemdesc, :itemrating, :itemimage, :categoryid) "; // hude l parameters henne l placeholders 
 
             // prepare the sql statement for execution
             $stmt = $this->db->prepare($sql);
@@ -173,10 +174,49 @@ class crud
             // bind all placeholders to the actual values
             $stmt->bindparam(':itemname', $item_name);
             $stmt->bindparam(':itemprice', $item_price);
+            $stmt->bindparam(':itemcurrency', $item_currency);
             $stmt->bindparam(':itemdesc', $item_desc);
             $stmt->bindparam(':itemrating', $item_rating);
             $stmt->bindparam(':itemimage', $item_image);
             $stmt->bindparam(':categoryid', $category_id);
+
+            // execute statement
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updatecurrencytodollar()
+    {
+        try {
+
+            // define sql statement to be executed
+            $sql = " UPDATE `restaurant` SET `currency_id` = 1 WHERE `res_id` = 1;";
+
+            // prepare the sql statement for execution
+            $stmt = $this->db->prepare($sql);
+
+            // execute statement
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updatecurrencytoeuro()
+    {
+        try {
+
+            // define sql statement to be executed
+            $sql = " UPDATE `restaurant` SET `currency_id` = 2 WHERE `res_id` = 1;";
+
+            // prepare the sql statement for execution
+            $stmt = $this->db->prepare($sql);
 
             // execute statement
             $stmt->execute();
@@ -243,6 +283,29 @@ class crud
     public function getitem()
     {
         $sql = "SELECT * FROM `item`;";
+        $result = $this->db->query($sql);
+        return $result;
+    }
+    //get all ratings
+    public function getrating()
+    {
+        $sql = "SELECT * FROM `rating`;";
+        $result = $this->db->query($sql);
+        return $result;
+    }
+
+    //get currency id from restaurant
+    public function getcurrencyfromres()
+    {
+        $sql = "SELECT * FROM `restaurant`;";
+        $result = $this->db->query($sql);
+        return $result->fetch();
+    }
+
+    //get all currency table info
+    public function getcurrency()
+    {
+        $sql = "SELECT * FROM `currency`;";
         $result = $this->db->query($sql);
         return $result;
     }

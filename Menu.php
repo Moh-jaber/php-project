@@ -22,6 +22,7 @@ require_once 'conn.php';
 <body>
 
     <?php
+
     //---------------------------------------------add item------------------------------------------------
     if (isset($_POST['item-submit'])) {
 
@@ -38,10 +39,10 @@ require_once 'conn.php';
 
         $allowed = array('jpg', 'jpeg', 'png');
 
-        ?>
-            <script>
-                console.log(<?php echo $fileActualExt ?>);
-            </script>
+    ?>
+        <script>
+            console.log(<?php echo $fileActualExt ?>);
+        </script>
         <?php
 
         if (in_array($fileActualExt, $allowed)) {
@@ -50,7 +51,7 @@ require_once 'conn.php';
                 $fileNameNew = uniqid('', true) . "." . $fileActualExt;
                 $fileDestination = 'images/itemImages/' . $fileNameNew;
                 move_uploaded_file($fileTmpName, $fileDestination);
-    ?>
+        ?>
                 <script>
                     alert("image uploaded successfully !");
                 </script>
@@ -84,7 +85,7 @@ require_once 'conn.php';
             $categroy_id = $_SESSION['categoryid'];
 
 
-            $insertitem = $crud->insertitem($item_name, $item_price, $item_desc, $item_rating, $item_image, $categroy_id);
+            $insertitem = $crud->insertitem($item_name, $item_price, $_SESSION['currency'], $item_desc, $item_rating, $item_image, $categroy_id);
 
         ?>
             <script>
@@ -122,10 +123,8 @@ require_once 'conn.php';
 
         <nav class="navbar">
             <a href="index.php">home</a>
-            <a href="#speciality">Menu</a>
             <a href="Reservation.php">Reservation</a>
             <a href="about.php">About</a>
-            <a href="index.php">review</a>
         </nav>
         <?php
         if (empty($_SESSION['status'])) {
@@ -228,7 +227,7 @@ require_once 'conn.php';
         <div>
             <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
             <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
-            <h1 class="credit"> Aall rights reserved! </h1>
+            <h1 class="credit"> All rights reserved! </h1>
 
     </section>
 

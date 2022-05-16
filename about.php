@@ -32,8 +32,6 @@
             <a href="index.php">home</a>
             <a href="Menu.php">Menu</a>
             <a href="Reservation.php">Reservation</a>
-            <!--<a href="#popular">popular</a>        <a href="#order">order</a>-->
-            <a href="#AboutUs2">About</a>
             
         </nav>
         <?php
@@ -137,11 +135,11 @@
             <a href="#" class="btn">pinterest</a>
             <a href="#" class="btn">linkedin</a>
         </div>
-    <div>
-        <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
-        <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
-        <h1 class="credit"> All rights reserved!   </h1>
-    
+        <div>
+            <h1 class="credit"> Contact Us : <span> 71 271 156 </span></h1>
+            <h1 class="credit"> Email : <span> Panadora.rest@gmail.com </span></h1>
+            <h1 class="credit"> All rights reserved! </h1>
+
     </section>
     
     <!-- scroll top button  -->

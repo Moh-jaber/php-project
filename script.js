@@ -34,7 +34,7 @@ window.onload = fadeOut();
 
 // When the user clicks on <div>, open the popup
 function myFunction() {
-  $(".PopupScreen").toggle();
+  $("offers-events .PopupScreen").toggle();
 }
 
 function myFunction2() {
